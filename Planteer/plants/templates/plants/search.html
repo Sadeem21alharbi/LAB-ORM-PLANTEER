@@ -1,0 +1,32 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="mb-5 animate__animated animate__fadeInDown">
+        <h1 class="fw-bold">نتائج البحث عن: <span class="text-success">"{{ request.GET.search }}"</span></h1>
+        <p class="text-muted">وجدنا {{ plants.count }} نتيجة تطابق بحثك.</p>
+    </div>
+
+    <div class="row">
+        {% for plant in plants %}
+        <div class="col-md-4 mb-4">
+            <div class="plant-card p-0 shadow-sm">
+                <img src="{{ plant.image.url }}" class="w-100" style="height: 250px; object-fit: cover;">
+                <div class="p-4">
+                    <h4 class="fw-bold">{{ plant.name }}</h4>
+                    <p class="text-muted text-truncate">{{ plant.description }}</p>
+                    <a href="{% url 'plants:plant_detail_view' plant.id %}" class="btn-main text-decoration-none">استكشف</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5 animate__animated animate__pulse">
+            <img src="https://cdn-icons-png.flaticon.com/512/6134/6134065.png" width="150" class="mb-4 opacity-50">
+            <h3>عذراً، لم نجد ما تبحث عنه!</h3>
+            <p>جرب البحث بكلمات أخرى أو تصفح كل المجموعات.</p>
+            <a href="{% url 'plants:all_plants_view' %}" class="btn-main d-inline-block mt-3 text-decoration-none">تصفح كل النباتات</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

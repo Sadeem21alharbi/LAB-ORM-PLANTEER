@@ -1,0 +1,53 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-5 animate__animated animate__fadeInDown">
+        <div>
+            <h1 class="fw-bold" style="color: var(--primary-green);">مجموعتنا النباتية</h1>
+            <p class="text-muted">استكشف جميع النباتات المتاحة في قاعدتنا</p>
+        </div>
+        <div class="dropdown">
+            <button class="btn btn-outline-success dropdown-toggle rounded-pill px-4" type="button" data-bs-toggle="dropdown">
+                تصفية حسب الفئة
+            </button>
+            <ul class="dropdown-menu border-0 shadow-sm">
+                <li><a class="dropdown-item" href="#">الأشجار</a></li>
+                <li><a class="dropdown-item" href="#">الخضروات</a></li>
+                <li><a class="dropdown-item" href="#">الفواكه</a></li>
+                <li><a class="dropdown-item" href="#">الأزهار</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        {% for plant in plants %}
+        <div class="col-md-4 mb-4 animate__animated animate__zoomIn">
+            <div class="plant-card p-0 shadow-sm">
+                <div class="position-relative overflow-hidden">
+                    <img src="{{ plant.image.url }}" class="w-100" style="height: 300px; object-fit: cover; transition: 0.5s;">
+                    <span class="badge position-absolute top-0 start-0 m-3 {% if plant.is_edible %}bg-success{% else %}bg-secondary{% endif %}">
+                        {% if plant.is_edible %}صالح للأكل{% else %}للزينة{% endif %}
+                    </span>
+                </div>
+                <div class="p-4">
+                    <small class="text-uppercase tracking-wider text-muted fw-bold" style="font-size: 0.7rem;">{{ plant.category }}</small>
+                    <h4 class="fw-bold mt-1">{{ plant.name }}</h4>
+                    <p class="text-muted text-truncate">{{ plant.description }}</p>
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <a href="{% url 'plants:plant_detail_view' plant.id %}" class="btn-main text-decoration-none py-2 px-4">استكشف</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <i class="fas fa-leaf fa-3x mb-3 text-muted"></i>
+            <h3>لا توجد نباتات حالياً</h3>
+            <p>ابدأ بإضافة نباتاتك المفضلة للمجموعة.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

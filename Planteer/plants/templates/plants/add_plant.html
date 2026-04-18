@@ -1,0 +1,46 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<div class="container py-5 animate__animated animate__fadeIn">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-0 shadow-sm p-5" style="border-radius: 25px;">
+                <h2 class="fw-bold mb-4" style="color: var(--primary-green);">أضف نباتاً جديداً للمكتبة</h2>
+                <form action="{% url 'plants:add_plant_view' %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">اسم النبات</label>
+                        <input type="text" name="name" class="form-control custom-input" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label fw-bold">الفئة</label>
+                            <select name="category" class="form-select custom-input">
+                                <option value="Tree">أشجار</option>
+                                <option value="Fruit">فواكة</option>
+                                <option value="Vegetable">خضروات</option>
+                                <option value="Flower">أزهار</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-4 d-flex align-items-center pt-4">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" name="is_edible" id="edibleSwitch">
+                                <label class="form-check-label fw-bold" for="edibleSwitch">هل هو صالح للأكل؟</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">صورة النبات</label>
+                        <input type="file" name="image" class="form-control custom-input" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">وصف النبات</label>
+                        <textarea name="description" class="form-control custom-input" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-main w-100">إضافة النبات الآن</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
