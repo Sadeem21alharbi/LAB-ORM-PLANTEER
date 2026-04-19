@@ -1,35 +1,34 @@
 {% extends 'main/base.html' %}
 {% load static %}
 
+{% block title %} Contact {% endblock %}
+
 {% block content %}
+<div class="container mt-3 d-flex justify-content-end">
+    <a href="javascript:history.back()" class="btn btn-outline-success rounded-pill px-4 fw-bold">
+        <i class="fas fa-arrow-left me-2"></i> رجوع
+    </a>
+</div>
 <div class="container py-5 animate__animated animate__fadeIn">
     <div class="row justify-content-center">
         <div class="col-lg-10">
             <div class="card border-0 shadow-lg overflow-hidden" style="border-radius: 30px;">
                 <div class="row g-0">
-                    
-                    <div class="col-md-5 p-5 text-white d-flex flex-column justify-content-center" 
-                         style="background: linear-gradient(135deg, var(--primary-green), #1e3d1a);">
+
+                    <div class="col-md-5 p-5 text-white d-flex flex-column justify-content-center"
+                        style="background: linear-gradient(135deg, var(--primary-green), #1e3d1a);">
                         <h2 class="fw-bold mb-4">خلينا على تواصل!</h2>
-                        <p class="mb-5 opacity-75">عندك استفسار عن نبات معين؟ أو حاب تشاركنا ملاحظاتك؟ فريق بلانتير دائماً موجود عشانك.</p>
-                        
+                        <p class="mb-5 opacity-75">عندك استفسار عن نبات معين؟ أو حاب تشاركنا ملاحظاتك؟ فريق بلانتير
+                            دائماً موجود عشانك.</p>
+
                         <div class="d-flex align-items-center mb-4">
-                            <div class="icon-box me-3"><i class="fas fa-map-marker-alt"></i></div>
                             <span>الرياض، المملكة العربية السعودية</span>
                         </div>
                         <div class="d-flex align-items-center mb-4">
-                            <div class="icon-box me-3"><i class="fas fa-envelope"></i></div>
                             <span>hello@planteer.com</span>
                         </div>
                         <div class="d-flex align-items-center mb-4">
-                            <div class="icon-box me-3"><i class="fas fa-phone"></i></div>
                             <span>+966 500 000 000</span>
-                        </div>
-
-                        <div class="social-links mt-5">
-                            <a href="#" class="text-white me-3"><i class="fab fa-instagram fa-lg"></i></a>
-                            <a href="#" class="text-white me-3"><i class="fab fa-twitter fa-lg"></i></a>
-                            <a href="#" class="text-white"><i class="fab fa-linkedin fa-lg"></i></a>
                         </div>
                     </div>
 
@@ -40,20 +39,24 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label small fw-bold">الاسم الأول</label>
-                                    <input type="text" name="first_name" class="form-control custom-input" placeholder="محمد" required>
+                                    <input type="text" name="first_name" class="form-control custom-input"
+                                        placeholder="محمد" required>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label small fw-bold">الاسم الأخير</label>
-                                    <input type="text" name="last_name" class="form-control custom-input" placeholder="علي" required>
+                                    <input type="text" name="last_name" class="form-control custom-input"
+                                        placeholder="علي" required>
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label small fw-bold">البريد الإلكتروني</label>
-                                <input type="email" name="email" class="form-control custom-input" placeholder="name@example.com" required>
+                                <input type="email" name="email" class="form-control custom-input"
+                                    placeholder="name@example.com" required>
                             </div>
                             <div class="mb-4">
                                 <label class="form-label small fw-bold">رسالتك</label>
-                                <textarea name="message" class="form-control custom-input" rows="4" placeholder="كيف نقدر نساعدك؟" required></textarea>
+                                <textarea name="message" class="form-control custom-input" rows="4"
+                                    placeholder="كيف نقدر نساعدك؟" required></textarea>
                             </div>
                             <button type="submit" class="btn-main w-100 py-3 shadow">إرسال الرسالة</button>
                         </form>
@@ -68,16 +71,19 @@
 <style>
     .custom-input {
         background-color: #f8f9fa;
-        border: 2px solid transparent;border-radius: 12px;
+        border: 2px solid transparent;
+        border-radius: 12px;
         padding: 12px 15px;
         transition: all 0.3s;
     }
+
     .custom-input:focus {
         background-color: #fff;
         border-color: var(--primary-green);
         box-shadow: none;
         outline: none;
     }
+
     .icon-box {
         width: 40px;
         height: 40px;

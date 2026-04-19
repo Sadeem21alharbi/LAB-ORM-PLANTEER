@@ -1,32 +1,102 @@
 {% extends 'main/base.html' %}
 
-{% block content %}
-<div class="container py-5">
-    <div class="mb-5 animate__animated animate__fadeInDown">
-        <h1 class="fw-bold">نتائج البحث عن: <span class="text-success">"{{ request.GET.search }}"</span></h1>
-        <p class="text-muted">وجدنا {{ plants.count }} نتيجة تطابق بحثك.</p>
-    </div>
+{% block title %} Search {% endblock %}
 
-    <div class="row">
-        {% for plant in plants %}
-        <div class="col-md-4 mb-4">
-            <div class="plant-card p-0 shadow-sm">
-                <img src="{{ plant.image.url }}" class="w-100" style="height: 250px; object-fit: cover;">
-                <div class="p-4">
-                    <h4 class="fw-bold">{{ plant.name }}</h4>
-                    <p class="text-muted text-truncate">{{ plant.description }}</p>
-                    <a href="{% url 'plants:plant_detail_view' plant.id %}" class="btn-main text-decoration-none">استكشف</a>
+{% block content %}
+<style>
+    .btn-back-custom {
+        display: inline-block;
+        padding: 10px 25px;
+        border-radius: 50px;
+        border: 1px solid #2d5a27;
+        color: #2d5a27;
+        text-decoration: none;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    .btn-back-custom:hover {
+        background-color: #2d5a27;
+        color: white;
+    }
+
+    .search-main-wrapper {
+        width: 100%;
+        max-width: 550px;
+        margin: 0 auto;
+    }
+
+    .search-main-box {
+        display: flex;
+        background-color: #f1f3f2;
+        border-radius: 60px;
+        padding: 6px 10px;
+        border: 1px solid #e0e0e0;
+        align-items: center;
+    }
+
+    .search-main-input {
+        flex-grow: 1;
+        border: none;
+        background: transparent;
+        padding: 10px 20px;
+        font-size: 1rem;
+        outline: none;
+    }
+
+    .btn-search-main-action {
+        background-color: #2d5a27;
+        color: white;
+        border: none;
+        border-radius: 50px;
+        padding: 10px 30px;
+        font-weight: 600;
+    }
+</style>
+<div class="container-fluid mt-4 px-5">
+    <div class="row align-items-center">
+
+        <div class="col-md-6">
+            <form action="{% url 'plants:search_view' %}" method="GET" class="search-main-wrapper">
+                <div class="search-main-box">
+                    <input name="search" type="search" class="search-main-input" placeholder="ابحث عن نباتك التالي..."
+                        value="{{ query }}">
+                    <button class="btn-search-main-action" type="submit">بحث</button>
                 </div>
+            </form>
+        </div>
+
+        <div class="col-md-3 order-first">
+            <a href="javascript:history.back()" class="btn-back-custom">
+                <i class="fas fa-arrow-left"></i> رجوع
+            </a>
+        </div>
+
+        <div class="col-md-3"></div>
+    </div>
+</div>
+<h2 class="fw-bold mb-4 mt-2">نتائج البحث عن: <span class="text-success">"{{ query }}"</span></h2>
+<div class="row">
+    {% for plant in plants %}
+    <div class="col-md-4 mb-4">
+        <div class="plant-card p-0 shadow-sm">
+            <img src="{{ plant.image.url }}" class="w-100" style="height: 250px; object-fit: cover;">
+            <div class="p-4">
+                <h4 class="fw-bold">{{ plant.name }}</h4>
+                <p class="text-muted text-truncate">{{ plant.description }}</p>
+                <a href="{% url 'plants:plant_detail_view' plant.id %}" class="btn-main text-decoration-none">استكشف</a>
             </div>
         </div>
-        {% empty %}
-        <div class="col-12 text-center py-5 animate__animated animate__pulse">
-            <img src="https://cdn-icons-png.flaticon.com/512/6134/6134065.png" width="150" class="mb-4 opacity-50">
-            <h3>عذراً، لم نجد ما تبحث عنه!</h3>
-            <p>جرب البحث بكلمات أخرى أو تصفح كل المجموعات.</p>
-            <a href="{% url 'plants:all_plants_view' %}" class="btn-main d-inline-block mt-3 text-decoration-none">تصفح كل النباتات</a>
-        </div>
-        {% endfor %}
     </div>
+    {% empty %}
+    <div class="col-12 text-center py-5 animate__animated animate__pulse">
+        <img src="https://cdn-icons-png.flaticon.com/512/6134/6134065.png" width="150" class="mb-4 opacity-50">
+        <h3>عذراً، لم نجد ما تبحث عنه!</h3>
+        <p>جرب البحث بكلمات أخرى أو تصفح كل المجموعات.</p>
+        <a href="{% url 'plants:all_plants_view' %}" class="btn-main d-inline-block mt-3 text-decoration-none">تصفح كل
+            النباتات</a>
+    </div>
+    {% endfor %}
+</div>
 </div>
 {% endblock %}

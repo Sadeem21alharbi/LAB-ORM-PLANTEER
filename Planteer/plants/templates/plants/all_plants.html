@@ -2,50 +2,160 @@
 {% load static %}
 
 {% block content %}
+<style>
+    :root {
+        --primary-green: #2d5a27;
+        --light-gray: #f1f3f2;
+    }
+
+    .btn-back-custom {
+        display: inline-block;
+        padding: 10px 25px;
+        border-radius: 50px;
+        border: 1px solid var(--primary-green);
+        color: var(--primary-green);
+        text-decoration: none;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    .btn-back-custom:hover {
+        background-color: var(--primary-green);
+        color: white;
+    }
+
+    .search-main-wrapper {
+        width: 100%;
+        max-width: 550px;
+    }
+
+    .search-main-box {
+        display: flex;
+        background-color: var(--light-gray);
+        border-radius: 60px;
+        padding: 6px 10px;
+        border: 1px solid #e0e0e0;
+        align-items: center;
+    }
+
+    .search-main-input {
+        flex-grow: 1;
+        border: none;
+        background: transparent;
+        padding: 10px 20px;
+        outline: none;
+    }
+
+    .btn-search-main-action {
+        background-color: var(--primary-green);
+        color: white;
+        border: none;
+        border-radius: 50px;
+        padding: 10px 30px;
+        font-weight: 600;
+    }
+
+    .plant-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        transition: 0.3s;
+        border: 1px solid #eee;
+    }
+
+    .plant-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .breadcrumb-item+.breadcrumb-item::before {
+        content: "/" !important;
+        padding: 0 10px;
+        color: #adb5bd;
+    }
+</style>
+
+<div class="container mt-4 px-4">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <a href="{% url 'main:home_view' %}" class="btn-back-custom order-md-1">
+            <i class="fas fa-arrow-left"></i> رجوع
+        </a>
+
+        <div class="search-main-wrapper order-md-2 mx-auto">
+            <form action="{% url 'plants:search_view' %}" method="GET" class="search-main-box">
+                <input name="search" type="search" class="search-input search-main-input"
+                    placeholder="ابحث عن نباتك التالي..." value="{{ query }}">
+                <button class="btn-search-main-action" type="submit">بحث</button>
+            </form>
+        </div>
+
+        <div class="d-none d-md-block order-md-3" style="width: 100px;"></div>
+    </div>
+</div>
+
 <div class="container py-5">
-    <div class="d-flex justify-content-between align-items-center mb-5 animate__animated animate__fadeInDown">
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb bg-transparent p-0" style="direction: rtl; justify-content: flex-start;">
+            <li class="breadcrumb-item"><a href="/" class="text-success text-decoration-none">الرئيسية</a></li>
+            <li class="breadcrumb-item active text-muted">كل النباتات</li>
+        </ol>
+    </nav>
+
+    <div class="d-flex justify-content-between align-items-center mb-5 flex-wrap gap-3" style="direction: rtl;">
         <div>
             <h1 class="fw-bold" style="color: var(--primary-green);">مجموعتنا النباتية</h1>
-            <p class="text-muted">استكشف جميع النباتات المتاحة في قاعدتنا</p>
+            <p class="text-muted mb-0">استكشف جميع النباتات المتاحة في قاعدتنا</p>
         </div>
-        <div class="dropdown">
-            <button class="btn btn-outline-success dropdown-toggle rounded-pill px-4" type="button" data-bs-toggle="dropdown">
-                تصفية حسب الفئة
-            </button>
-            <ul class="dropdown-menu border-0 shadow-sm">
-                <li><a class="dropdown-item" href="#">الأشجار</a></li>
-                <li><a class="dropdown-item" href="#">الخضروات</a></li>
-                <li><a class="dropdown-item" href="#">الفواكه</a></li>
-                <li><a class="dropdown-item" href="#">الأزهار</a></li>
-            </ul>
-        </div>
+
+        <form action="{% url 'plants:all_plants_view' %}" method="GET" class="d-flex gap-3 align-items-center">
+            <select name="category" class="form-select rounded-pill px-4 border-success shadow-sm"
+                onchange="this.form.submit()">
+                <option value="">كل الفئات</option>
+                <option value="TREE" {% if request.GET.category == "TREE" %}selected{% endif %}>الأشجار</option>
+                <option value="FLOWER" {% if request.GET.category == "FLOWER" %}selected{% endif %}>الأزهار</option>
+                <option value="FRUIT" {% if request.GET.category == "FRUIT" %}selected{% endif %}>الفواكه</option>
+                <option value="VEGETABLE" {% if request.GET.category == "VEGETABLE" %}selected{% endif %}>الخضروات
+                </option>
+            </select>
+
+            <select name="is_edible" class="form-select rounded-pill px-4 border-success shadow-sm"
+                onchange="this.form.submit()">
+                <option value="">صلاحية الأكل</option>
+                <option value="True" {% if request.GET.is_edible == "True" %}selected{% endif %}>صالح للأكل</option>
+                <option value="False" {% if request.GET.is_edible == "False" %}selected{% endif %}>غير صالح للأكل</option>
+            </select>
+        </form>
     </div>
 
     <div class="row">
         {% for plant in plants %}
-        <div class="col-md-4 mb-4 animate__animated animate__zoomIn">
-            <div class="plant-card p-0 shadow-sm">
+        <div class="col-md-4 mb-4">
+            <div class="plant-card shadow-sm h-100">
                 <div class="position-relative overflow-hidden">
-                    <img src="{{ plant.image.url }}" class="w-100" style="height: 300px; object-fit: cover; transition: 0.5s;">
-                    <span class="badge position-absolute top-0 start-0 m-3 {% if plant.is_edible %}bg-success{% else %}bg-secondary{% endif %}">
-                        {% if plant.is_edible %}صالح للأكل{% else %}للزينة{% endif %}
+                    <img src="{{ plant.image.url }}" class="w-100" style="height: 250px; object-fit: cover;">
+                    <span
+                        class="badge position-absolute top-0 start-0 m-3 {% if plant.is_edible %}bg-success{% else %}bg-secondary{% endif %}">
+                        {% if plant.is_edible %}صالح للأكل{% else %}غير صالح للأكل{% endif %}
                     </span>
                 </div>
-                <div class="p-4">
-                    <small class="text-uppercase tracking-wider text-muted fw-bold" style="font-size: 0.7rem;">{{ plant.category }}</small>
-                    <h4 class="fw-bold mt-1">{{ plant.name }}</h4>
+                <div class="p-4 text-end" style="direction: rtl;">
+                    <small class="text-success fw-bold">
+                        {% if plant.category == 'FRUIT' %}فاكهة
+                        {% elif plant.category == 'FLOWER' %}ورد
+                        {% elif plant.category == 'TREE' %}أشجار
+                        {% elif plant.category == 'VEGETABLE' %}خضروات
+                        {% else %}{{ plant.category }}{% endif %}
+                    </small>
+                    <h4 class="fw-bold mt-1 text-dark">{{ plant.name }}</h4>
                     <p class="text-muted text-truncate">{{ plant.description }}</p>
-                    <div class="d-flex justify-content-between align-items-center mt-4">
-                        <a href="{% url 'plants:plant_detail_view' plant.id %}" class="btn-main text-decoration-none py-2 px-4">استكشف</a>
-                    </div>
+                    <a href="{% url 'plants:plant_detail_view' plant.id %}"
+                        class="btn btn-outline-success btn-sm rounded-pill px-4 mt-3">استكشف</a>
                 </div>
             </div>
         </div>
         {% empty %}
         <div class="col-12 text-center py-5">
-            <i class="fas fa-leaf fa-3x mb-3 text-muted"></i>
-            <h3>لا توجد نباتات حالياً</h3>
-            <p>ابدأ بإضافة نباتاتك المفضلة للمجموعة.</p>
+            <h3 class="text-muted">لا توجد نباتات حالياً</h3>
         </div>
         {% endfor %}
     </div>

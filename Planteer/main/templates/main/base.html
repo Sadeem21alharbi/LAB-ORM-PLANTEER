@@ -1,119 +1,121 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Planteer - قاعدتك للنباتات</title>
-    
+    <title>Planteer</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-<style>
-    :root {
-        --primary-green: #2D5A27; 
-        --light-sage: #F1F4F0;   
-        --accent-orange: #E67E22; 
-        --soft-white: #FFFFFF;
-    }
 
-    body {
-        font-family: 'Montserrat', sans-serif;
-        background-color: var(--soft-white);
-        color: #1a1a1a;
-        overflow-x: hidden;
-    }
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <style>
+        :root {
+            --primary-green: #2D5A27;
+            --light-sage: #F1F4F0;
+            --accent-orange: #E67E22;
+            --soft-white: #FFFFFF;
+        }
 
-    .navbar {
-        background-color: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        padding: 1.2rem 2rem;
-        transition: all 0.3s ease;
-    }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--soft-white);
+            color: #1a1a1a;
+            overflow-x: hidden;
+        }
 
-    .navbar-brand {
-        font-weight: 800;
-        letter-spacing: -1px;
-        color: var(--primary-green) !important;
-    }
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.2rem 2rem;
+            transition: all 0.3s ease;
+        }
 
-    .btn-main {
-        background: var(--primary-green);
-        color: white;
-        border-radius: 50px;
-        padding: 12px 30px;
-        border: none;
-        font-weight: 600;
-        transition: all 0.4s;
-        box-shadow: 0 4px 15px rgba(45, 90, 39, 0.2);
-    }
+        .navbar-brand {
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: var(--primary-green) !important;
+        }
 
-    .btn-main:hover {
-        transform: scale(1.05);
-        background: #1e3d1a;
-        color: white;
-    }
+        .btn-main {
+            background: var(--primary-green);
+            color: white;
+            border-radius: 50px;
+            padding: 12px 30px;
+            border: none;
+            font-weight: 600;
+            transition: all 0.4s;
+            box-shadow: 0 4px 15px rgba(45, 90, 39, 0.2);
+        }
 
-    .search-container {
-        background: white;
-        padding: 10px;
-        border-radius: 100px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-        border: 1px solid #eee;
-        display: flex;
-        transition: 0.3s;
-    }
+        .btn-main:hover {
+            transform: scale(1.05);
+            background: #1e3d1a;
+            color: white;
+        }
 
-    .search-container:focus-within {
-        box-shadow: 0 10px 30px rgba(45, 90, 39, 0.15);
-        border-color: var(--primary-green);
-    }
+        .search-container {
+            background: white;
+            padding: 10px;
+            border-radius: 100px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid #eee;
+            display: flex;
+            transition: 0.3s;
+        }
 
-    .search-input {
-        border: none;
-        outline: none;
-        padding: 10px 25px;
-        width: 100%;
-        border-radius: 100px;
-    }
+        .search-container:focus-within {
+            box-shadow: 0 10px 30px rgba(45, 90, 39, 0.15);
+            border-color: var(--primary-green);
+        }
 
-    .plant-card {
-        border: none;
-        border-radius: 20px;
-        overflow: hidden;
-        background: var(--light-sage);
-        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
+        .search-input {
+            border: none;
+            outline: none;
+            padding: 10px 25px;
+            width: 100%;
+            border-radius: 100px;
+        }
 
-    .plant-card:hover {
-        transform: translateY(-15px);
-        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-    }
+        .plant-card {
+            border: none;
+            border-radius: 20px;
+            overflow: hidden;
+            background: var(--light-sage);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
 
-    .fade-in-up {
-        animation: fadeInUp 1s both;
-    }
-</style>
+        .plant-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 1s both;
+        }
+    </style>
 </head>
+
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="{% url 'main:home_view' %}">Planteer</a>
-            
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            
+
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-collapse collapse navbar-collapse justify-content-end navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'plants:all_plants_view' %}">كل النباتات</a>
                     </li>
                     <li class="nav-item">
-                    <a class="btn btn-black" href="{% url 'plants:add_plant_view' %}">إضافة نبات</a>
+                        <a class="btn btn-black" href="{% url 'plants:add_plant_view' %}">إضافة نبات</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'main:contact_view' %}">اتصل بنا</a>
@@ -126,48 +128,13 @@
         {% block content %}
         {% endblock %}
     </div>
-
+    <hr>
     <footer class="footer mt-auto py-3">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3">
-                    <h5 class="fw-bold">اسم الموقع</h5>
-                    <div class="social-icons mt-3">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-                
-                <div class="col-md-9 text-start">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <ul class="list-unstyled">
-                                <li><a href="#">رابط 1</a></li>
-                                <li><a href="#">رابط 2</a></li>
-                                <li><a href="#">رابط 3</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-md-4">
-                            <ul class="list-unstyled">
-                                <li><a href="#">رابط 1</a></li>
-                                <li><a href="#">رابط 2</a></li>
-                                <li><a href="#">رابط 3</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-md-4">
-                            <ul class="list-unstyled">
-                                <li><a href="#">رابط 1</a></li>
-                                <li><a href="#">رابط 2</a></li>
-                                <li><a href="#">رابط 3</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <h4 style="text-align:right; color: #1e3d1a;"> Planteer</h4>
+        <p style="text-align: center;"> © 2026 Planteer. All rights reserved.</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.min.js"></script>
 </body>
+
 </html>

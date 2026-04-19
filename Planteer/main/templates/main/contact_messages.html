@@ -1,0 +1,113 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %} Contact Message {% endblock %}
+{% block content %}
+<style>
+    .messages-container {
+        background-color: #f8f9fa;
+        min-height: 80vh;
+    }
+    
+    .msg-card {
+        border-radius: 20px;
+        border: none;
+        transition: all 0.3s ease;
+        background: #ffffff;
+    }
+
+    .msg-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+    }
+
+    .avatar-icon {
+        width: 55px;
+        height: 55px;
+        background-color: #e8f5e9;
+        color: #2d5a27;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.3rem;
+        border: 2px solid #2d5a27;
+    }
+
+    .email-link {
+        color: #2d5a27;
+        text-decoration: none;
+        font-size: 0.9rem;
+    }
+
+    .message-text {
+        color: #444;
+        line-height: 1.7;
+        font-style: italic;
+        background: #fdfdfd;
+        padding: 15px;
+        border-radius: 10px;
+        border-right: 4px solid #2d5a27; /* لمسة جمالية خضراء */
+    }
+
+    .time-badge {
+        font-size: 0.75rem;
+        color: #888;
+    }
+</style>
+<div class="container mt-3 d-flex justify-content-end">
+    <a href="javascript:history.back()" class="btn btn-outline-success rounded-pill px-4 fw-bold">
+        <i class="fas fa-arrow-left me-2"></i> رجوع
+    </a>
+</div>
+<div class="messages-container py-5">
+    <div class="container">
+        <div class="text-center mb-5 animate__animated animate__fadeIn">
+            <h1 class="fw-bold" style="color: #2d5a27;">Messages from Users</h1>
+            <div class="mx-auto" style="width: 80px; height: 4px; background: #2d5a27; border-radius: 2px;"></div>
+            <p class="text-muted mt-3">استعرض رسائل وتواصل الزوار مع منصة النباتات</p>
+        </div>
+
+        <div class="row">
+            {% for msg in messages %}
+            <div class="col-md-6 col-lg-4 mb-4 animate__animated animate__zoomIn">
+                <div class="card h-100 shadow-sm msg-card">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="avatar-icon me-3">
+                                {{ msg.first_name|slice:":1" }}{{ msg.last_name|slice:":1" }}
+                            </div>
+                            <div>
+                                <h5 class="mb-0 fw-bold text-dark">{{ msg.first_name }} {{ msg.last_name }}</h5>
+                                <a href="mailto:{{ msg.email }}" class="email-link">
+                                    <i class="far fa-envelope me-1"></i> {{ msg.email }}
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="message-text mb-3">
+                            {{ msg.message }}
+                        </div>
+                    </div>
+
+                    <div class="card-footer bg-transparent border-0 px-4 pb-4 d-flex justify-content-between align-items-center">
+                        <span class="time-badge">
+                            <i class="far fa-calendar-alt me-1"></i> {{ msg.created_at|date:"d/m/Y" }}
+                        </span>
+                        <span class="time-badge">
+                            <i class="far fa-clock me-1"></i> {{ msg.created_at|date:"H:i A" }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <i class="fas fa-inbox fa-4x text-muted mb-3 opacity-50"></i>
+                <h3 class="text-muted">لا توجد رسائل جديدة</h3>
+                <p>الرسائل التي يرسلها المستخدمون عبر صفحة "اتصل بنا" ستظهر هنا.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

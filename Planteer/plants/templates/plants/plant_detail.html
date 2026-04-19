@@ -1,34 +1,83 @@
 {% extends 'main/base.html' %}
 
+{% block title %} Plants Details!  {% endblock %}
+
 {% block content %}
-<div class="container py-5">
-    <nav aria-label="breadcrumb" class="mb-5 animate__animated animate__fadeIn">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'plants:all_plants_view' %}" class="text-success">كل النباتات</a></li>
+<div class="container-fluid mt-4 px-5">
+    <div class="d-flex justify-content-start">
+        <a href="javascript:history.back()" class="btn btn-outline-success rounded-pill px-4 fw-bold shadow-sm">
+            <i class="fas fa-arrow-left me-2"></i> رجوع
+        </a>
+    </div>
+</div>
+
+<style>
+    .breadcrumb-item+.breadcrumb-item::before {
+        content: "/" !important;
+        padding: 0 10px;
+        color: #adb5bd;
+        float: right;
+    }
+
+    .breadcrumb-item a {
+        text-decoration: none;
+        color: #2d5a27;
+        transition: 0.3s;
+    }
+
+    .breadcrumb-item.active {
+        font-weight: bold;
+        color: #6c757d !important;
+    }
+
+    .related-card {
+        transition: 0.3s;
+        border: 1px solid #eee !important;
+    }
+
+    .related-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+    }
+</style>
+
+<div class="container py-4">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb bg-transparent p-0" style="direction: rtl; justify-content: flex-start;">
+            <li class="breadcrumb-item"><a href="{% url 'main:home_view' %}">الرئيسية</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'plants:all_plants_view' %}">كل النباتات</a></li>
             <li class="breadcrumb-item active">{{ plant.name }}</li>
         </ol>
     </nav>
 
     <div class="row g-5 align-items-start">
-        <div class="col-lg-6 animate__animated animate__fadeInLeft">
+        <div class="col-lg-6 animate__animated animate__fadeInRight">
             <div class="rounded-5 overflow-hidden shadow-lg border-bottom border-5 border-success">
-                <img src="{{ plant.image.url }}" class="img-fluid w-100" style="max-height: 600px; object-fit: cover;">
+                <img src="{{ plant.image.url }}" class="img-fluid w-100" style="max-height: 500px; object-fit: cover;">
             </div>
         </div>
 
-        <div class="col-lg-6 animate__animated animate__fadeInRight">
-            <span class="text-success fw-bold text-uppercase" style="letter-spacing: 2px;">{{ plant.category }}</span>
-            <h1 class="display-4 fw-bold mt-2 mb-4">{{ plant.name }}</h1>
-            
-            <div class="d-flex align-items-center mb-4">
-                <div class="me-4">
+        <div class="col-lg-6 animate__animated animate__fadeInLeft text-end" style="direction: rtl;">
+            <span class="text-success fw-bold text-uppercase" style="letter-spacing: 1px;">
+                {% if plant.category == 'FRUIT' %}فاكهة
+                {% elif plant.category == 'FLOWER' %}زهرة
+                {% elif plant.category == 'TREE' %}شجرة
+                {% elif plant.category == 'VEGETABLE' %}خضروات
+                {% else %}{{ plant.category }}{% endif %}
+            </span>
+
+            <h1 class="display-5 fw-bold mt-2 mb-4">{{ plant.name }}</h1>
+
+            <div class="d-flex align-items-center mb-4 gap-5">
+                <div>
                     <p class="text-muted small mb-0">تاريخ الإضافة</p>
                     <p class="fw-bold">{{ plant.created_at|date:"d M Y" }}</p>
                 </div>
                 <div>
                     <p class="text-muted small mb-0">الحالة</p>
                     <p class="fw-bold {% if plant.is_edible %}text-success{% else %}text-warning{% endif %}">
-                        {% if plant.is_edible %}صالح للأكل{% else %}للزينة فقط{% endif %}
+                        {% if plant.is_edible %}<i class="fas fa-utensils me-1"></i> صالح للأكل{% else %}<i
+                            class="fas fa-eye me-1"></i> للزينة فقط{% endif %}
                     </p>
                 </div>
             </div>
@@ -36,11 +85,49 @@
             <h5 class="fw-bold mb-3">عن هذا النبات</h5>
             <p class="lead text-muted mb-5" style="line-height: 1.8;">{{ plant.description }}</p>
 
-            <div class="d-flex gap-3 mt-5">
-                <a href="{% url 'plants:update_plant_view' plant.id %}" class="btn btn-outline-dark rounded-pill px-4 py-2">تعديل البيانات</a>
-                <button class="btn btn-outline-danger rounded-pill px-4 py-2" data-bs-toggle="modal" data-bs-target="#deleteModal">حذف</button>
+            <div class="d-flex gap-3 mt-5 justify-content-start">
+                <a href="{% url 'plants:update_plant_view' plant_id=plant.id %}"
+                    class="btn btn-outline-dark rounded-pill px-4 py-2">
+                    <i class="fas fa-edit me-1"></i> تعديل البيانات
+                </a>
+                <button class="btn btn-outline-danger rounded-pill px-4 py-2" data-bs-toggle="modal"
+                    data-bs-target="#deleteModal">
+                    <i class="fas fa-trash me-1"></i> حذف
+                </button>
             </div>
         </div>
+    </div>
+</div>
+
+<hr class="my-5 opacity-25">
+
+<div class="container pb-5">
+    <h3 class="fw-bold mb-4 text-end" style="color: #2d5a27; direction: rtl;">نباتات قد تعجبك</h3>
+
+    <div class="row" style="direction: rtl;">
+        {% for related in related_plants %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden related-card">
+                <img src="{{ related.image.url }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                <div class="p-3 text-center">
+                    <small class="text-success fw-bold">
+                        {% if related.category == 'FRUIT' %}فاكهة
+                        {% elif related.category == 'FLOWER' %}زهرة
+                        {% elif related.category == 'TREE' %}شجرة
+                        {% elif related.category == 'VEGETABLE' %}خضروات
+                        {% else %}{{ related.category }}{% endif %}
+                    </small>
+                    <h5 class="fw-bold mb-2 mt-1">{{ related.name }}</h5>
+                    <a href="{% url 'plants:plant_detail_view' related.id %}"
+                        class="btn btn-success btn-sm rounded-pill px-4 shadow-sm">مشاهدة التفاصيل</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">
+            <p class="text-muted italic">لا توجد اقتراحات مشابهة حالياً.</p>
+        </div>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}

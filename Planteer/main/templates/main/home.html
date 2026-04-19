@@ -1,10 +1,71 @@
 {% extends 'main/base.html' %}
 {% load static %}
 
+{% block title %} Home {% endblock %}
+
 {% block content %}
+<style>
+    :root {
+        --primary-green: #2d5a27;
+        --light-sage: #e8f5e9;
+    }
+
+    .btn-explore-custom {
+        display: inline-block;
+        padding: 12px 40px;
+        background-color: transparent;
+        color: var(--primary-green);
+        border: 2px solid var(--primary-green);
+        border-radius: 50px;
+        font-weight: bold;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 1.1rem;
+    }
+
+    .btn-explore-custom:hover {
+        background-color: var(--primary-green);
+        color: white;
+        box-shadow: 0 5px 15px rgba(45, 90, 39, 0.3);
+        transform: translateY(-2px);
+    }
+
+    .home-plant-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+        border: none;
+        position: relative;
+        min-height: 380px;
+    }
+
+    .home-plant-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .card-img-full {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .card-gradient-overlay {
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        padding: 25px 20px;
+        color: white;
+        z-index: 2;
+    }
+</style>
+
 <div class="container">
     <div class="row align-items-center min-vh-100 py-5">
-        <div class="col-lg-6 animate__animated animate__fadeInLeft">
+        <div class="col-lg-6 animate__animated animate__fadeInLeft text-end" style="direction: rtl;">
             <h1 class="display-3 fw-bold mb-4" style="color: var(--primary-green);">
                 Planteer <br>
                 <span style="color: #4A7C44;">Your Green Soul</span>
@@ -13,43 +74,75 @@
                 اكتشف عالم النباتات الساحر. ابحث عن فصيلتك المفضلة، تعلم كيفية العناية بها، وشاركنا شغفك باللون الأخضر.
             </p>
 
-            <form action="{% url 'plants:search_view' %}" method="GET" class="search-container mb-4">
-                <input type="text" name="search" class="search-input" placeholder="ابحث عن نباتك القادم...">
-                <button type="submit" class="btn-main">بحث</button>
+            <form action="{% url 'plants:search_view' %}" method="GET" class="search-container mb-4 d-flex gap-2">
+                <input type="text" name="search" class="search-input flex-grow-1" placeholder="ابحث عن نباتك التالي..."
+                    style="border-radius: 50px; padding: 12px 25px; border: 1px solid #ddd; outline: none;">
+                <button type="submit" class="btn-main"
+                    style="background: var(--primary-green); color: white; border-radius: 50px; padding: 10px 30px; border: none;">بحث</button>
             </form>
-        </div>
 
-        <div class="col-lg-6 animate__animated animate__fadeInRight">
-            <div class="position-relative">
-                <img src="https://images.unsplash.com/photo-1545241047-6083a3684587?q=80&w=1000" 
-                     alt="Plant" class="img-fluid rounded-circle shadow-lg" 
-                     style="width: 500px; height: 500px; object-fit: cover; border: 15px solid var(--light-sage);">
-            </div>
-        </div>
-    </div>
-
-    <div class="py-5">
-        <div class="d-flex justify-content-between align-items-end mb-5">
-            <div>
-                <h2 class="fw-bold">نباتات مختارة</h2>
-                <div style="width: 50px; height: 4px; background: var(--primary-green);"></div>
-            </div>
-            <a href="{% url 'plants:all_plants_view' %}" class="btn btn-link text-decoration-none text-success">عرض الكل ←</a>
-        </div>
-
-        <div class="row">
-            <div class="col-md-4 mb-4">
-                <div class="plant-card p-3">
-                    <img src="" class="img-fluid rounded-4 mb-3">
-                    <h5 class="fw-bold"> <h5>
-                    <p class="text-muted small">  </p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="badge bg-success bg-opacity-10 text-success p-2">نبات زينة</span>
-                        <a href="#" class="btn-main py-1 px-3" style="font-size: 0.8rem;">التفاصيل</a>
-                    </div>
+            <div class="d-flex justify-content-center justify-content-lg-start mt-4">
+                <div class="animate__animated animate__fadeInUp">
+                    <a href="{% url 'plants:all_plants_view' %}" class="btn-explore-custom">
+                        <i class="fas fa-leaf me-2"></i> استكشف النباتات
+                    </a>
                 </div>
             </div>
+        </div>
+
+        <div class="col-lg-6 animate__animated animate__fadeInRight text-center">
+            <div class="position-relative d-inline-block">
+                <img src="https://images.unsplash.com/photo-1545241047-6083a3684587?q=80&w=1000" alt="Plant"
+                    class="img-fluid rounded-circle shadow-lg"
+                    style="width: 450px; height: 450px; object-fit: cover; border: 15px solid var(--light-sage);">
             </div>
+        </div>
     </div>
 </div>
+
+<div class="container py-5" style="direction: rtl;">
+    <div class="d-flex justify-content-between align-items-end mb-4">
+        <div class="text-right">
+            <h2 class="fw-bold mb-0" style="color: var(--primary-green);">نباتات مختارة</h2>
+            <p class="text-muted small mb-0">تعرف أكثر على مجموعتنا المختارة</p>
+        </div>
+        <a href="{% url 'plants:all_plants_view' %}" class="btn btn-link text-success fw-bold text-decoration-none p-0">
+            المزيد <i class="fas fa-chevron-left ms-1" style="font-size: 0.8rem;"></i>
+        </a>
+    </div>
+
+    <div class="row g-4">
+        {% for plant in latest_plants %}
+        <div class="col-md-4 animate__animated animate__fadeInUp">
+            <div class="border-0 bg-transparent">
+                <div class="rounded-4 overflow-hidden mb-3 shadow-sm" style="height: 250px;">
+                    <img src="{{ plant.image.url }}" class="w-100 h-100" style="object-fit: cover;">
+                </div>
+
+                <div class="px-1">
+                    <h5 class="fw-bold mb-1 text-dark">{{ plant.name }}</h5>
+                    <p class="text-muted small mb-2 text-truncate">{{ plant.description }}</p>
+
+                    <span class="badge rounded-pill bg-light text-success border border-success-subtle px-3 py-2"
+                        style="font-size: 0.75rem;">
+                        {% if plant.category == 'FRUIT' %}فاكهة
+                        {% elif plant.category == 'FLOWER' %}زهرة
+                        {% elif plant.category == 'TREE' %}شجرة
+                        {% elif plant.category == 'VEGETABLE' %}خضروات
+                        {% else %}{{ plant.category }}{% endif %}
+                    </span>
+                </div>
+
+                <a href="{% url 'plants:plant_detail_view' plant.id %}" class="stretched-link"></a>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <p class="text-muted">لا توجد نباتات لعرضها حالياً.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<br>
+<br>
 {% endblock %}

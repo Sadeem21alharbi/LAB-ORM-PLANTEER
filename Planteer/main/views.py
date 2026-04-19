@@ -1,24 +1,32 @@
-from django.shortcuts import render
 
 # Create your views here.
 
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
 from .models import Contact
+from plants.models import Plant
+
 
 # دالة الصفحة الرئيسية
 def home_view(request: HttpRequest):
-    return render(request, "main/home.html")
+    latest_plants = Plant.objects.all().order_by('-created_at')[:3]
+    return render(request, "main/home.html", {"latest_plants": latest_plants})
 
-# دالة صفحة "اتصل بنا"
 def contact_view(request: HttpRequest):
     if request.method == "POST":
-        # هنا سنكتب كود حفظ الرسالة لاحقاً
-        pass
+        new_message = Contact(
+            first_name=request.POST["first_name"],
+            last_name=request.POST["last_name"],
+            email=request.POST["email"],
+            message=request.POST["message"]
+        )
+        new_message.save() 
+        
+        return redirect("main:contact_messages_view")
     return render(request, "main/contact.html")
 
-# دالة عرض رسائل التواصل (للمدير)
+
 def contact_messages_view(request: HttpRequest):
-    # جلب كل الرسائل من قاعدة البيانات
-    messages = Contact.objects.all()
+    messages = Contact.objects.all().order_by('-created_at')
     return render(request, "main/contact_messages.html", {"messages": messages})
+
