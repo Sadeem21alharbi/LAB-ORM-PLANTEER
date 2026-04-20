@@ -64,10 +64,8 @@ def update_plant_view(request: HttpRequest, plant_id: int):
 
 def delete_plant_view(request: HttpRequest, plant_id: int):
     plant = get_object_or_404(Plant, pk=plant_id)
-    if request.method == "POST":
-        plant.delete()
-        return redirect("plants:all_plants_view")
-    return render(request, "plants/delete_confirm.html", {"plant": plant})
+    plant.delete()  
+    return redirect("plants:all_plants_view")
 
 def search_view(request: HttpRequest):
     query = request.GET.get("search") or request.GET.get("search_input") or ""
