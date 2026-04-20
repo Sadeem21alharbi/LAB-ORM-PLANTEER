@@ -2,7 +2,7 @@
 # Create your views here.
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpRequest, HttpResponse
-from .models import Plant
+from .models import Plant, Comment
 
 def all_plants_view(request: HttpRequest):
     plants = Plant.objects.all()
@@ -21,6 +21,17 @@ def all_plants_view(request: HttpRequest):
 def plant_detail_view(request: HttpRequest, plant_id: int):
     plant = get_object_or_404(Plant, pk=plant_id)
    
+    if request.method == "POST":
+        new_comment = Comment(
+            plant=plant, 
+            name=request.POST["name"], 
+            content=request.POST["content"]
+        )
+        new_comment.save()
+        return redirect("plants:plant_detail_view", plant_id=plant.id)
+
+    comments = Comment.objects.filter(plant=plant).order_by('-created_at')
+
     related_plants = Plant.objects.filter(
         category=plant.category, 
         is_edible=plant.is_edible
@@ -28,7 +39,8 @@ def plant_detail_view(request: HttpRequest, plant_id: int):
 
     return render(request, "plants/plant_detail.html", {
         "plant": plant,
-        "related_plants": related_plants
+        "related_plants": related_plants,
+        "comments": comments
     })
 
 def add_plant_view(request: HttpRequest):

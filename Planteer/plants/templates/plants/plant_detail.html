@@ -3,10 +3,10 @@
 {% block title %} Plants Details!  {% endblock %}
 
 {% block content %}
-<div class="container-fluid mt-4 px-5">
-    <div class="d-flex justify-content-start">
-        <a href="javascript:history.back()" class="btn btn-outline-success rounded-pill px-4 fw-bold shadow-sm">
-            <i class="fas fa-arrow-left me-2"></i> رجوع
+<div class="container mt-4 px-4">
+    <div class="d-flex justify-content-end align-items-center">
+        <a href="{% url 'plants:all_plants_view' %}" class="btn-back-custom">
+            رجوع 
         </a>
     </div>
 </div>
@@ -39,6 +39,26 @@
         transform: translateY(-5px);
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
     }
+    
+    .btn-back-custom {
+    color: #2D5A27; 
+    border: 1px solid #2D5A27;
+    border-radius: 50px; 
+    padding: 8px 25px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-back-custom:hover {
+    background-color: #2D5A27;
+    color: white;
+    transform: translateX(-5px);
+}
+
 </style>
 
 <div class="container py-4">
@@ -100,9 +120,48 @@
 
 <hr class="my-5 opacity-25">
 
+    <div class="container mt-5">
+    <h3 class="fw-bold border-bottom pb-3">التعليقات ({{ comments.count }})</h3>
+    
+    {% for comment in comments %}
+    <div class="card mb-3 border-0 shadow-sm rounded-4">
+        <div class="card-body p-4 text-end" style="direction: rtl;">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="fw-bold mb-0 text-success">{{ comment.name }}</h6>
+                <small class="text-muted">{{ comment.created_at|date:"d M Y" }}</small>
+            </div>
+            <p class="mb-0 text-dark">{{ comment.content }}</p>
+        </div>
+    </div>
+    {% empty %}
+    <p class="text-center text-muted my-4">لا توجد تعليقات بعد، كن أول من يشارك رأيه!</p>
+    {% endfor %}
+</div>
+<div class="container mt-5 mb-5">
+    <div class="card p-4 border-0 shadow rounded-4 bg-light">
+        <h4 class="fw-bold mb-4 text-end">اترك تعليقاً</h4>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="row g-3">
+                <div class="col-12 text-end">
+                    <label class="form-label fw-bold small">الاسم</label>
+                    <input type="text" name="name" class="form-control rounded-pill border-0 px-3 shadow-sm" required>
+                </div>
+                <div class="col-12 text-end">
+                    <label class="form-label fw-bold small">التعليق</label>
+                    <textarea name="content" class="form-control rounded-4 border-0 px-3 shadow-sm" rows="4" required></textarea>
+                </div>
+                <div class="col-12 text-start mt-4">
+                    <button type="submit" class="btn btn-success rounded-pill px-5 py-2 fw-bold">نشر التعليق</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<hr class="my-5 opacity-25">
+
 <div class="container pb-5">
     <h3 class="fw-bold mb-4 text-end" style="color: #2d5a27; direction: rtl;">نباتات قد تعجبك</h3>
-
     <div class="row" style="direction: rtl;">
         {% for related in related_plants %}
         <div class="col-md-4 mb-4">

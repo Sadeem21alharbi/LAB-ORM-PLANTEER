@@ -4,10 +4,12 @@
 {% block title %} Contact {% endblock %}
 
 {% block content %}
-<div class="container mt-3 d-flex justify-content-end">
-    <a href="javascript:history.back()" class="btn btn-outline-success rounded-pill px-4 fw-bold">
-        <i class="fas fa-arrow-left me-2"></i> رجوع
-    </a>
+<div class="container mt-4 px-4">
+    <div class="d-flex justify-content-end align-items-center">
+        <a href="{% url 'plants:all_plants_view' %}" class="btn-back-custom">
+            رجوع 
+        </a>
+    </div>
 </div>
 <div class="container py-5 animate__animated animate__fadeIn">
     <div class="row justify-content-center">
@@ -93,5 +95,23 @@
         align-items: center;
         justify-content: center;
     }
+    .btn-back-custom {
+    color: #2D5A27; 
+    border: 1px solid #2D5A27;
+    border-radius: 50px; 
+    padding: 8px 25px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-back-custom:hover {
+    background-color: #2D5A27;
+    color: white;
+    transform: translateX(-5px);
+}
 </style>
 {% endblock %}
