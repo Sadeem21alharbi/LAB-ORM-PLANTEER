@@ -109,16 +109,25 @@
         </div>
 
         <form action="{% url 'plants:all_plants_view' %}" method="GET" class="d-flex gap-3 align-items-center">
+        
+            <select name="country" class="form-select rounded-pill px-4 border-success shadow-sm" onchange="this.form.submit()">
+                <option value="">موطن النبات </option>
+                {% for c in countries %}
+                <option value="{{ c.id }}" {% if request.GET.country == c.id|stringformat:"i" %}selected{% endif %}>
+                    {{ c.name }}
+                </option>
+                {% endfor %}
+            </select>
+        
             <select name="category" class="form-select rounded-pill px-4 border-success shadow-sm"
                 onchange="this.form.submit()">
                 <option value="">كل الفئات</option>
                 <option value="TREE" {% if request.GET.category == "TREE" %}selected{% endif %}>الأشجار</option>
                 <option value="FLOWER" {% if request.GET.category == "FLOWER" %}selected{% endif %}>الأزهار</option>
                 <option value="FRUIT" {% if request.GET.category == "FRUIT" %}selected{% endif %}>الفواكه</option>
-                <option value="VEGETABLE" {% if request.GET.category == "VEGETABLE" %}selected{% endif %}>الخضروات
-                </option>
+                <option value="VEGETABLE" {% if request.GET.category == "VEGETABLE" %}selected{% endif %}>الخضروات</option>
             </select>
-
+        
             <select name="is_edible" class="form-select rounded-pill px-4 border-success shadow-sm"
                 onchange="this.form.submit()">
                 <option value="">صلاحية الأكل</option>
@@ -127,32 +136,10 @@
             </select>
         </form>
     </div>
-
     <div class="row">
         {% for plant in plants %}
         <div class="col-md-4 mb-4">
-            <div class="plant-card shadow-sm h-100">
-                <div class="position-relative overflow-hidden">
-                    <img src="{{ plant.image.url }}" class="w-100" style="height: 250px; object-fit: cover;">
-                    <span
-                        class="badge position-absolute top-0 start-0 m-3 {% if plant.is_edible %}bg-success{% else %}bg-secondary{% endif %}">
-                        {% if plant.is_edible %}صالح للأكل{% else %}غير صالح للأكل{% endif %}
-                    </span>
-                </div>
-                <div class="p-4 text-end" style="direction: rtl;">
-                    <small class="text-success fw-bold">
-                        {% if plant.category == 'FRUIT' %}فاكهة
-                        {% elif plant.category == 'FLOWER' %}ورد
-                        {% elif plant.category == 'TREE' %}أشجار
-                        {% elif plant.category == 'VEGETABLE' %}خضروات
-                        {% else %}{{ plant.category }}{% endif %}
-                    </small>
-                    <h4 class="fw-bold mt-1 text-dark">{{ plant.name }}</h4>
-                    <p class="text-muted text-truncate">{{ plant.description }}</p>
-                    <a href="{% url 'plants:plant_detail_view' plant.id %}"
-                        class="btn btn-outline-success btn-sm rounded-pill px-4 mt-3">استكشف</a>
-                </div>
-            </div>
+            {% include 'plants/plant_card.html' %}
         </div>
         {% empty %}
         <div class="col-12 text-center py-5">
@@ -160,5 +147,4 @@
         </div>
         {% endfor %}
     </div>
-</div>
-{% endblock %}
+    {% endblock %}

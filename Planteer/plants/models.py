@@ -1,5 +1,12 @@
 from django.db import models
 
+class country(models.Model):
+    name = models.CharField(max_length=100)
+    flag = models.ImageField(upload_to="images/")
+
+    def __str__(self):
+        return self.name
+    
 class Plant(models.Model):
     class Category(models.TextChoices):
         TREE = 'Tree', 'Tree'
@@ -15,10 +22,9 @@ class Plant(models.Model):
         default=Category.TREE
     )
     is_edible = models.BooleanField(default=False)
-    
     image = models.ImageField(upload_to="images/", default="images/default.jpg")
-    
     created_at = models.DateTimeField(auto_now_add=True)
+    countries = models.ManyToManyField(country)
 
     def __str__(self):
         return self.name

@@ -55,7 +55,7 @@
 </style>
 <div class="container mt-4 px-4">
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-        
+
         <div class="d-none d-md-block" style="width: 100px;"></div>
 
         <div class="search-main-wrapper mx-auto">
@@ -67,7 +67,7 @@
         </div>
 
         <a href="{% url 'main:home_view' %}" class="btn-back-custom">
-             رجوع <i class="fas fa-arrow-right"></i> </a>
+            رجوع <i class="fas fa-arrow-right"></i> </a>
 
     </div>
 </div>
@@ -75,14 +75,7 @@
 <div class="row">
     {% for plant in plants %}
     <div class="col-md-4 mb-4">
-        <div class="plant-card p-0 shadow-sm">
-            <img src="{{ plant.image.url }}" class="w-100" style="height: 250px; object-fit: cover;">
-            <div class="p-4">
-                <h4 class="fw-bold">{{ plant.name }}</h4>
-                <p class="text-muted text-truncate">{{ plant.description }}</p>
-                <a href="{% url 'plants:plant_detail_view' plant.id %}" class="btn-main text-decoration-none">استكشف</a>
-            </div>
-        </div>
+        {% include 'plants/plant_card.html' %}
     </div>
     {% empty %}
     <div class="col-12 text-center py-5 animate__animated animate__pulse">

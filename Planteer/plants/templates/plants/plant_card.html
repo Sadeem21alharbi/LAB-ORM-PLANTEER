@@ -1,0 +1,22 @@
+<div class="plant-card shadow-sm h-100">
+                <div class="position-relative overflow-hidden">
+                    <img src="{{ plant.image.url }}" class="w-100" style="height: 250px; object-fit: cover;">
+                    <span
+                        class="badge position-absolute top-0 start-0 m-3 {% if plant.is_edible %}bg-success{% else %}bg-secondary{% endif %}">
+                        {% if plant.is_edible %}صالح للأكل{% else %}غير صالح للأكل{% endif %}
+                    </span>
+                </div>
+                <div class="p-4 text-end" style="direction: rtl;">
+                    <small class="text-success fw-bold">
+                        {% if plant.category == 'FRUIT' %}فاكهة
+                        {% elif plant.category == 'FLOWER' %}ورد
+                        {% elif plant.category == 'TREE' %}أشجار
+                        {% elif plant.category == 'VEGETABLE' %}خضروات
+                        {% else %}{{ plant.category }}{% endif %}
+                    </small>
+                    <h4 class="fw-bold mt-1 text-dark">{{ plant.name }}</h4>
+                    <p class="text-muted text-truncate">{{ plant.description }}</p>
+                    <a href="{% url 'plants:plant_detail_view' plant.id %}"
+                        class="btn btn-outline-success btn-sm rounded-pill px-4 mt-3">استكشف</a>
+                </div>
+            </div>

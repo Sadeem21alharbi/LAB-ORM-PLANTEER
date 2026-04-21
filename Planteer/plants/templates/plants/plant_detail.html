@@ -58,6 +58,33 @@
     color: white;
     transform: translateX(-5px);
 }
+.country-badge {
+    background-color: #f0f7ef; 
+    color: #2d5a27; 
+    border: 1px solid #d1e7dd;
+    padding: 6px 15px;
+    border-radius: 50px; 
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: 0.3s;
+}
+
+.country-badge:hover {
+    background-color: #2d5a27;
+    color: white;
+    transform: translateY(-2px); 
+}
+
+.flag-img {
+    width: 22px;
+    height: 15px;
+    object-fit: cover;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+}
 
 </style>
 
@@ -117,7 +144,17 @@
         </div>
     </div>
 </div>
-
+<div class="mt-4 text-end" style="direction: rtl;">
+    <h6 class="fw-bold mb-3 text-muted">الموطن الأصلي:</h6>
+    <div class="d-flex flex-wrap gap-2 justify-content-start">
+        {% for c in plant.countries.all %}
+            <div class="country-badge shadow-sm">
+                <img src="{{ c.flag.url }}" class="flag-img" alt="{{ c.name }}">
+                <span>{{ c.name }}</span>
+            </div>
+        {% endfor %}
+    </div>
+</div>
 <hr class="my-5 opacity-25">
 
     <div class="container mt-5">
